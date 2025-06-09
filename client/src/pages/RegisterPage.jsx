@@ -53,7 +53,7 @@ const RegisterPage = () => {
   }
 
   return (
-    <div className='w-full h-screen bg-gray-900 text-white flex justify-center items-center bg-[url(/assets/register.jpg)] object-cover bg-no-repeat'>
+    <div className='w-full h-screen bg-gray-900 text-white flex justify-center items-center bg-[url(/assets/register.jpg)] bg-cover'>
         <div className='w-100 p-10 bg-[#000000cc] rounded-4xl text-white'>
             <form onSubmit={handleSubmit}>
                 <input className='px-3 py-2 mb-4 text-lg rounded-lg border focus:border-sky-500 focus:outline focus:outline-sky-500 w-full' type="text" placeholder='First Name' name='firstName' required value={formData.firstName} onChange={handleChange}/>
@@ -62,7 +62,7 @@ const RegisterPage = () => {
                 <input className='px-3 py-2 mb-4 border focus:border-sky-500 focus:outline focus:outline-sky-500 text-lg rounded-lg w-full' type="password" placeholder='Password' name='password' required value={formData.password} onChange={handleChange}/>
                 <input className='px-3 py-2 border focus:border-sky-500 focus:outline focus:outline-sky-500 text-lg rounded-lg w-full' type="password" placeholder='Confirm Password' name='confirmPassword' required value={formData.confirmPassword} onChange={handleChange}/>
                 {!passwordMatch && (
-                  <p className='text-red-600'>Password are not matched!</p>
+                  <p className='text-red-600'>Passwords are not matching</p>
                 )}
                 <label htmlFor="image" className='block w-full text-center mt-4 cursor-pointer'><img className='mx-auto w-5' src="/assets/addImage.png" alt="" />Upload Your Photo</label>
                 <input className='invisible' id='image' type="file" name='profileImage' accept='image/*' required onChange={handleChange}/>
@@ -71,7 +71,7 @@ const RegisterPage = () => {
                     <img src={URL.createObjectURL(formData.profileImage)} alt='profile photo' className='max-w-20'/>
                   </div>
                 )}
-                <button type='submit' disabled={!passwordMatch} className='bg-red-600 px-14 py-2 mb-4 rounded-lg block mx-auto hover:bg-red-500 cursor-pointer disabled:bg-red-700 disabled:cursor-not-allowed'>Register</button>
+                <button type='submit' disabled={!passwordMatch} className='bg-red-600 px-14 py-2 mb-4 rounded-lg block mx-auto hover:bg-red-500 cursor-pointer disabled:bg-red-800 disabled:cursor-not-allowed'>Register</button>
             </form>
             <p className='text-sm text-center'>Already have an account? Log in <a href="/login" className='text-blue-400 underline'>Here</a></p>
         </div>
