@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { setLogin } from '../redux/state';
+import { useDispatch } from 'react-redux'
 
 const LoginPage = () => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
@@ -20,13 +23,19 @@ const LoginPage = () => {
       })
 
       /* Get data after fetching */
-      const data = await response.json()
+      const loggedIn = await response.json()
 
-      if(response.ok) {
+      if(loggedIn) {
+        dispatch(
+          setLogin({
+            user: loggedIn.user,
+            token: loggedIn.token
+          })
+        )
         navigate('/')
       }
+
     } catch (err) {
-      console.log(err)
       console.log("Login failed", err.message)
     }
   }

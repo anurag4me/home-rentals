@@ -47,7 +47,7 @@ const RegisterPage = () => {
         navigate('/login')
       }
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       console.log("Registration failed", err.message)
     }
   }

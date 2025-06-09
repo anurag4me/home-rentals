@@ -71,25 +71,24 @@ router.post("/login", async (req, res) => {
     /* Check if user exists */
     const user = await User.findOne({ email });
     if (!user)
-      return res.status(409).json({ message: "User doesn't exists! Please sign in" });
+      return res
+        .status(409)
+        .json({ message: "User doesn't exists! Please sign in" });
 
     /* Compare the password with the hashed password */
-    const isMatch = bcrypt.compare(password, user.password)
-    if(!isMatch) return res.status(400).json({message: "Invalid email or password!"})
+    const isMatch = bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid email or password!" });
 
     /* Generate JWT token */
-    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET)
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
     /* Send a successful message */
-    delete user.password
-    res
-      .status(200)
-      .json({ message: "User logged successfully!", token, user });
+    delete user.password;
+    res.status(200).json({ message: "User logged successfully!", token, user });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .json({ message: "Login failed!", error: err.message });
+    res.status(500).json({ message: "Login failed!", error: err.message });
   }
 });
 
