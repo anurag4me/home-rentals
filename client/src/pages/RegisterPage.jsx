@@ -71,7 +71,7 @@ const RegisterPage = () => {
                     <img src={URL.createObjectURL(formData.profileImage)} alt='profile photo' className='max-w-20'/>
                   </div>
                 )}
-                <button type='submit' disabled={!passwordMatch} className='bg-red-600 px-14 py-2 mb-4 rounded-lg block mx-auto hover:bg-red-500 cursor-pointer disabled:bg-red-800 disabled:cursor-not-allowed'>Register</button>
+                <button type='submit' disabled={!passwordMatch} className='bg-red-600 shadow-lg shadow-red-500/50 px-14 py-2 mb-4 rounded-lg block mx-auto hover:bg-red-500 cursor-pointer disabled:bg-red-800 disabled:cursor-not-allowed'>Register</button>
             </form>
             <p className='text-sm text-center'>Already have an account? Log in <a href="/login" className='text-blue-400 underline'>Here</a></p>
         </div>

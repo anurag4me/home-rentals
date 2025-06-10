@@ -46,7 +46,7 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit}>
                 <input className='px-3 py-2 mb-4 border focus:border-sky-500 focus:outline focus:outline-sky-500 text-lg rounded-lg w-full' type="email" placeholder='Email' name='email' required value={email} onChange={(e)=>setEmail(e.target.value)}/>
                 <input className='px-3 py-2 mb-4 border focus:border-sky-500 focus:outline focus:outline-sky-500 text-lg rounded-lg w-full' type="password" placeholder='Password' name='password' required value={password} onChange={(e)=>setPassword(e.target.value)}/>
-                <button type='submit' className='bg-red-600 px-14 py-2 mb-4 rounded-lg block mx-auto hover:bg-red-500 cursor-pointer'>Login</button>
+                <button type='submit' className='bg-red-600 shadow-lg shadow-red-500/50 px-14 py-2 mb-4 rounded-lg block mx-auto hover:bg-red-500 cursor-pointer'>Login</button>
             </form>
             <p className='text-sm text-center'>Don't have an account? Sign In <a href="/register" className='text-blue-400 underline'>Here</a></p>
         </div>
