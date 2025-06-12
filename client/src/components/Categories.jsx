@@ -23,7 +23,7 @@ const Categories = () => {
                 alt={category.label}
                 className="absolute w-full h-full"
               />
-              <div className="absolute w-full h-full bg-[#00000080] transition delay-150 ease-in-out hover:w-[80%] hover:h-[80%]"></div>
+              <div className="absolute w-full h-full bg-[#00000080] ease-in-out hover:w-[80%] hover:h-[80%] transition delay-300"></div>
               <div className="relative text-white">
                 <div className="text-[45px]">{category.icon}</div>
                 <p className="font-semibold">{category.label}</p>
