@@ -14,10 +14,10 @@ const Categories = () => {
         home, and create unforgettable memories in your dream destination.
       </p>
 
-      <div className="flex flex-wrap py-12 justify-center gap-5">
-        {categories?.slice(1, 7).map((category, index) => (
+      <div className="flex flex-wrap py-12 justify-center gap-6">
+        {categories?.slice(1, 8).map((category, index) => (
           <Link to="" key={index}>
-            <div className="relative flex justify-center items-center w-57 h-49 cursor-pointer">
+            <div className="relative flex justify-center items-center w-70 h-60 cursor-pointer">
               <img
                 src={category.img}
                 alt={category.label}
