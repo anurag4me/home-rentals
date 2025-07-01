@@ -84,9 +84,8 @@ router.get("/", async (req, res) => {
         "creator"
       );
     } else {
-      listings = await Listing.find().populate("creator");
+      listings = await Listing.find({}).populate("creator");
     }
-
     res.status(200).json(listings);
   } catch (err) {
     res
@@ -95,5 +94,18 @@ router.get("/", async (req, res) => {
     console.log(err);
   }
 });
+
+/* LISTING DETAILS */
+router.get('/:listingId', async (req, res) => {
+  try{
+    const { listingId } = req.params;
+    const listing = await Listing.findById(listingId).populate("creator");
+    res.status(202).json(listing);
+  } catch (err) {
+    res
+      .status(404)
+      .send({ message: "Listing can not found!", error: err.message });
+  }
+})
 
 module.exports = router;

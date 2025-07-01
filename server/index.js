@@ -4,6 +4,7 @@ const mongoDbConnect = require("./connection");
 const cors = require("cors");
 const authRoutes = require("./routes/auth.js");
 const listingRoutes = require("./routes/listing.route.js");
+const bookingRoutes = require("./routes/booking.route.js");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -19,6 +20,7 @@ mongoDbConnect(process.env.MONGO_URL)
 /* ROUTES */
 app.use("/auth", authRoutes);
 app.use("/properties", listingRoutes);
+app.use("/booking", bookingRoutes);
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
