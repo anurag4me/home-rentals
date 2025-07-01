@@ -5,6 +5,7 @@ import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import ListingCard from "../components/ListingCard";
 import { setReservationList } from "../redux/state";
+import Footer from "../components/Footer";
 
 const ReservationList = () => {
   const [loading, setLoading] = useState(true);
@@ -56,6 +57,7 @@ const ReservationList = () => {
           />
         ))}
       </div>
+      <Footer />
     </>
   );
 };

@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import ListingCard from "../components/ListingCard";
 import { useParams } from "react-router-dom";
 import { setListings } from "../redux/state";
+import Footer from "../components/Footer";
 
 const SearchPage = () => {
   const [loading, setLoading] = useState(true);
@@ -72,6 +73,7 @@ const SearchPage = () => {
           )
         )}
       </div>
+      <Footer />
     </>
   );
 };

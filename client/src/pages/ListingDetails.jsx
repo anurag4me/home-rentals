@@ -10,6 +10,7 @@ import { DateRange } from "react-date-range";
 import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import { useSelector } from "react-redux";
+import Footer from "../components/Footer";
 
 function ListingDetails() {
   const [loading, setLoading] = useState(true);
@@ -181,6 +182,8 @@ const handleSubmit = async () => {
           </div>
         </div>
       </div>
+      
+      <Footer />
     </>
   );
 }

@@ -6,6 +6,7 @@ import ListingCard from "../components/ListingCard";
 import Loader from "../components/Loader";
 import { useParams } from "react-router-dom";
 import { setListings } from "../redux/state";
+import Footer from "../components/Footer";
 
 const CategoryPage = () => {
   const [loading, setLoading] = useState(true);
@@ -73,6 +74,7 @@ const CategoryPage = () => {
           )
         )}
       </div>
+      <Footer />
     </>
   );
 };
