@@ -1,35 +1,34 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import "../styles/List.scss";
 import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
-import { useDispatch, useSelector } from "react-redux";
-import { setTripList } from "../redux/state";
 import ListingCard from "../components/ListingCard";
+import { setReservationList } from "../redux/state";
 
-const TripList = () => {
+const ReservationList = () => {
   const [loading, setLoading] = useState(true);
-
-
-  const userId = useSelector((state) => state.user?._id);
-  const tripList = useSelector((state) => state.user?.tripList);
-
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const getTripList = async () => {
+  const reservationList = user?.reservationList;
+
+  const getReservationList = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/users/${userId}/trips`
+        `http://localhost:3000/users/${user._id}/reservations`
       );
       const data = await response.json();
-      dispatch(setTripList(data));
+
+      dispatch(setReservationList(data));
       setLoading(false);
     } catch (err) {
-      console.log("Fetch Trip List failed!", err.message);
+      console.log("Fetch all reservations failed", err.message);
     }
   };
 
   useEffect(() => {
-    getTripList();
+    getReservationList();
   }, []);
 
   return loading ? (
@@ -37,9 +36,11 @@ const TripList = () => {
   ) : (
     <>
       <Navbar />
-      <h1 className="text-3xl text-blue-950 font-800 font-semibold title-list">Your Trip List</h1>
+      <h1 className="text-3xl text-blue-950 font-800 font-semibold title-list">
+        Your Reservation List
+      </h1>
       <div className="list">
-        {tripList?.map(({ listingId, hostId, startDate, endDate, totalPrice, booking=true }, index) => (
+        {reservationList?.map(({ listingId, hostId, startDate, endDate, totalPrice, booking=true }) => (
           <ListingCard
             listingId={listingId._id}
             creator={hostId._id}
@@ -52,7 +53,6 @@ const TripList = () => {
             endDate={endDate}
             totalPrice={totalPrice}
             booking={booking}
-            key={index}
           />
         ))}
       </div>
@@ -60,4 +60,4 @@ const TripList = () => {
   );
 };
 
-export default TripList;
+export default ReservationList;

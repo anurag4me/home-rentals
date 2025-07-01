@@ -80,19 +80,19 @@ const Navbar = () => {
               Wish List
             </Link>
             <Link
-              to=""
+              to={`/${user._id}/properties`}
               className="w-full px-4 py-2 font-medium hover:bg-gray-200 hover:text-red-500"
             >
               Property List
             </Link>
             <Link
-              to=""
+              to={`/${user._id}/reservations`}
               className="w-full px-4 py-2 font-medium hover:bg-gray-200 hover:text-red-500"
             >
               Reservation List
             </Link>
             <Link
-              to=""
+              to="/create-listing"
               className="w-full px-4 py-2 font-medium hover:bg-gray-200 hover:text-red-500"
             >
               Become A Host

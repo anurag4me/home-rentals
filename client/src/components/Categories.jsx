@@ -1,32 +1,26 @@
-import React from "react";
 import { categories } from "../data";
+import "../styles/Categories.scss"
 import { Link } from "react-router-dom";
 
 const Categories = () => {
   return (
-    <div className="py-12 px-14 flex flex-col items-center text-center bg-gray-200 sm:px-5">
-      <h1 className="text-3xl text-blue-950 font-800 mb-4 font-bold">
-        Explore Top Categories
-      </h1>
-      <p className="max-w-[700px] text-2xl">
+    <div className="categories">
+      <h1>Explore Top Categories</h1>
+      <p>
         Explore our wide range of vacation rentals that cater to all types of
-        travelers. Immerse yourself in the local culture. enjoy the comforts of
+        travelers. Immerse yourself in the local culture, enjoy the comforts of
         home, and create unforgettable memories in your dream destination.
       </p>
 
-      <div className="flex flex-wrap py-12 justify-center gap-6">
-        {categories?.slice(1, 8).map((category, index) => (
-          <Link to="" key={index}>
-            <div className="relative flex justify-center items-center w-70 h-60 cursor-pointer">
-              <img
-                src={category.img}
-                alt={category.label}
-                className="absolute w-full h-full"
-              />
-              <div className="absolute w-full h-full bg-[#00000080] ease-in-out hover:w-[80%] hover:h-[80%] transition delay-300"></div>
-              <div className="relative text-white">
-                <div className="text-[45px]">{category.icon}</div>
-                <p className="font-semibold">{category.label}</p>
+      <div className="categories_list">
+        {categories?.slice(1, 7).map((category, index) => (
+          <Link to={`/properties/category/${category.label}`}>
+            <div className="category" key={index}>
+              <img src={category.img} alt={category.label} />
+              <div className="overlay"></div>
+              <div className="category_text">
+                <div className="category_text_icon">{category.icon}</div>
+                <p>{category.label}</p>
               </div>
             </div>
           </Link>
