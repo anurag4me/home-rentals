@@ -68,13 +68,13 @@ const Navbar = () => {
         {dropDownMenu && user && (
           <div className="w-50 flex flex-col justify-center absolute top-18 right-15 py-2 shadow-xl/30 rounded-3xl overflow-hidden bg-white border border-gray-300">
             <Link
-              to=""
+              to={`/${user._id}/trips`}
               className="w-full px-4 py-2 font-medium hover:bg-gray-200 hover:text-red-500"
             >
               Trip List
             </Link>
             <Link
-              to=""
+              to={`/${user._id}/wishList`}
               className="w-full px-4 py-2 font-medium hover:bg-gray-200 hover:text-red-500"
             >
               Wish List

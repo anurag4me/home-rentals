@@ -7,12 +7,10 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-// import { setWishList } from "../redux/state";
+import { setWishList } from "../redux/state";
 
-const ListingCard = ({listing}) => {
-
-  const {
-  _id,
+const ListingCard = ({
+  listingId,
   creator,
   listingPhotoPaths,
   city,
@@ -25,7 +23,7 @@ const ListingCard = ({listing}) => {
   endDate,
   totalPrice,
   booking,
-} = listing;
+}) => {
 
   /* SLIDER FOR IMAGES */
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -48,12 +46,12 @@ const ListingCard = ({listing}) => {
   const user = useSelector((state) => state.user);
   const wishList = user?.wishList || [];
 
-  const isLiked = wishList?.find((item) => item?._id === _id);
+  const isLiked = wishList?.find((item) => item?._id === listingId);
 
   const patchWishList = async () => {
     if (user?._id !== creator._id) {
     const response = await fetch(
-      `http://localhost:3000/users/${user?._id}/${_id}`,
+      `http://localhost:3000/users/${user?._id}/${listingId}`,
       {
         method: "PATCH",
         header: {
@@ -62,6 +60,7 @@ const ListingCard = ({listing}) => {
       }
     );
     const data = await response.json();
+    console.log(data)
     dispatch(setWishList(data.wishList));
   } else { return }
   };
@@ -70,7 +69,7 @@ const ListingCard = ({listing}) => {
     <div
       className="listing-card"
       onClick={() => {
-        navigate(`/properties/${_id}`);
+        navigate(`/properties/${listingId}`);
       }}
     >
       <div className="slider-container">

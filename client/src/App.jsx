@@ -5,6 +5,8 @@ import HomePage from "./pages/HomePage";
 import RegisterPage from "./pages/RegisterPage";
 import CreateListing from "./pages/CreateListing";
 import ListingDetails from "./pages/ListingDetails";
+import TripList from "./pages/TripList";
+import WishList from "./pages/WishList";
 
 export default function App() {
   return (
@@ -15,6 +17,8 @@ export default function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/create-listing" element={<CreateListing />} />
         <Route path="/properties/:listingId" element={<ListingDetails />} />
+        <Route path="/:userId/trips" element={<TripList />} />
+        <Route path="/:userId/wishList" element={<WishList />} />
       </Routes>
     </BrowserRouter>
   );

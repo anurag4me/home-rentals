@@ -32,7 +32,6 @@ const Listings = () => {
     getFeedListings();
   }, [selectedCategory]);
 
-    console.log(listings)
   return (
     <>
       <div className="flex flex-wrap justify-center items-center gap-1 py-12 px-15">
@@ -53,9 +52,34 @@ const Listings = () => {
         <Loader />
       ) : (
         <div className="flex flex-wrap justify-center gap-1.5 py-12 px-15">
-          {listings.map((listing, index) => (
-            <ListingCard listing={listing} key={index}/>
-          ))}
+          {listings.map(
+            ({
+              _id,
+              creator,
+              listingPhotoPaths,
+              city,
+              province,
+              country,
+              category,
+              type,
+              price,
+              booking=false
+            }, index) => (
+              <ListingCard
+                listingId={_id}
+                creator={creator}
+                listingPhotoPaths={listingPhotoPaths}
+                city={city}
+                province={province}
+                country={country}
+                category={category}
+                type={type}
+                price={price}
+                booking={booking}
+                key={index}
+              />
+            )
+          )}
         </div>
       )}
     </>
