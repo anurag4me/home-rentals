@@ -3,14 +3,16 @@ import { Search, Person, Menu } from "@mui/icons-material";
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setLogout } from "../redux/state";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [dropDownMenu, setDropDownMenu] = useState(false);
+  const [search, setSearch] = useState("")
 
   const user = useSelector((state) => state.user);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleLogout() {
     dispatch(setLogout());
@@ -25,11 +27,13 @@ const Navbar = () => {
       <div className="border border-gray-600 h-10 flex items-center gap-10 rounded-4xl py-0 px-5">
         <input
           type="text"
+          value={search}
+          onChange={(e) =>setSearch(e.target.value)}
           placeholder="Search..."
           className="outline-none border-none"
         />
-        <IconButton>
-          <Search className="text-red-600" />
+        <IconButton disabled={search == ""}>
+          <Search className="text-red-600" onClick={()=>{navigate(`/properties/search/${search}`)}}/>
         </IconButton>
       </div>
 

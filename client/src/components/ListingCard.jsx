@@ -60,7 +60,6 @@ const ListingCard = ({
       }
     );
     const data = await response.json();
-    console.log(data)
     dispatch(setWishList(data.wishList));
   } else { return }
   };
