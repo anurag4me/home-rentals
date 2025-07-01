@@ -75,6 +75,7 @@ router.post("/create", upload.array("listingPhotos"), async (req, res) => {
   }
 });
 
+/* GET LISTING BY CATEGORY */
 router.get("/", async (req, res) => {
   const qCategory = req.query.category;
   try {
