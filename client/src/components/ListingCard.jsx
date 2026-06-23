@@ -121,12 +121,9 @@ const ListingCard = ({
       ) : (
         <>
           <p>
-            {new Date(startDate).toDateString()} -{" "}
-            {new Date(endDate).toDateString()}
+            {new Date(startDate).toDateString()}{" - "}{new Date(endDate).toDateString()}
           </p>
-          <p>
-            <span>${totalPrice}</span> total
-          </p>
+          <p>Total: <span>${totalPrice}</span></p>
         </>
       )}
 

@@ -71,9 +71,9 @@ function ListingDetails() {
     }
     try {
       const bookingForm = {
-        customerId: user._id,
-        hostId: listing.creator,
-        listingId,
+        guest: user._id,
+        host: listing.creator._id,
+        listing: listingId,
         startDate: start,
         endDate: end,
         guestsCount,
@@ -84,14 +84,14 @@ function ListingDetails() {
 
       const response = await fetch("http://localhost:3000/booking/create", {
         method: "POST",
-        headerss: {
+        headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(bookingForm),
       });
 
       if (response.ok) {
-        navigate(`/${customerId}/trips`);
+        navigate(`/${user._id}/trips`);
       }
     } catch (err) {
       console.log("Submit Booking Failed.", err.message);

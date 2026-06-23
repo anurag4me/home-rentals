@@ -13,6 +13,7 @@ const ReservationCard = ({
   endDate,
   guestsCount,
   totalPrice,
+  onUpdate,
   status,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -49,7 +50,9 @@ const ReservationCard = ({
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (response.ok) {
+        onUpdate(data);
+      } else {
         console.error(data.message);
       }
     } catch (error) {
@@ -67,7 +70,7 @@ const ReservationCard = ({
           className="slider"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {listing.listingPhotoPaths?.map((photo, index) => (
+          {listing.listingPhotoPaths.map((photo, index) => (
             <div key={index} className="slide">
               <img
                 src={`http://localhost:3000/${photo?.replace("public", "")}`}

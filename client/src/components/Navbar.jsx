@@ -32,8 +32,8 @@ const Navbar = () => {
           placeholder="Search..."
           className="outline-none border-none"
         />
-        <IconButton disabled={search == ""}>
-          <Search className="text-red-600" onClick={()=>{navigate(`/properties/search/${search}`)}}/>
+        <IconButton disabled={search == ""} onClick={()=>{navigate(`/properties/search/${search}`)}}>
+          <Search className="text-red-600"/>
         </IconButton>
       </div>
 

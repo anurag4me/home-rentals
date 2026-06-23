@@ -48,6 +48,25 @@ const PropertyCard = ({
 
   const isLiked = wishList?.find((item) => item?._id === listingId);
 
+  const handleDelete = async (listingId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/users/${user._id}/delete/${listingId}`,
+        { method: "DELETE" }
+      );
+
+      const data = await response.json();
+
+      if (response.ok) {
+        onDelete(data.listing);
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <div className="ordinary-card">
       <div className="slider-container">
@@ -97,7 +116,7 @@ const PropertyCard = ({
           Edit
         </button>
 
-        <button className="delete" onClick={() => onDelete(listingId)}>
+        <button className="delete" onClick={()=>handleDelete(listingId)}>
           Delete
         </button>
       </div>

@@ -85,7 +85,7 @@ router.get("/", async (req, res) => {
         "creator"
       );
     } else {
-      listings = await Listing.find({}).populate("creator");
+      listings = await Listing.find({}).populate("creator", "-password");
     }
     res.status(200).json(listings);
   } catch (err) {
@@ -103,14 +103,14 @@ router.get("/search/:search", async(req, res) => {
     let listings = []
 
     if(search === "all"){
-      listings = await Listing.find().populate("creator")
+      listings = await Listing.find().populate("creator", "-password");
     } else {
       listings = await Listing.find({
         $or: [
           { category: {$regex: search, $options: "i"}},
           { title: {$regex: search, $options: "i"}},
         ]
-      }).populate("creator")
+      }).populate("creator", "-password");
     }
     res.status(200).json(listings)
   } catch(err){
@@ -126,7 +126,7 @@ router.get("/search/:search", async(req, res) => {
 router.get('/:listingId', async (req, res) => {
   try{
     const { listingId } = req.params;
-    const listing = await Listing.findById(listingId).populate("creator");
+    const listing = await Listing.findById(listingId).populate("creator", "-password");
     res.status(202).json(listing);
   } catch (err) {
     res

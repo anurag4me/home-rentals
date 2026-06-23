@@ -8,10 +8,10 @@ import Footer from "../components/Footer";
 
 const TripList = () => {
   const [loading, setLoading] = useState(true);
+  const [tripLists, setTripLists] = useState([]);
 
 
   const userId = useSelector((state) => state.user?._id);
-  const tripList = useSelector((state) => state.user?.tripList);
 
   const getTripList = async () => {
     try {
@@ -19,9 +19,12 @@ const TripList = () => {
         `http://localhost:3000/users/${userId}/trips`
       );
       const data = await response.json();
-      setLoading(false);
+      if(response.ok)
+        setTripLists(data.trips);
     } catch (err) {
       console.log("Fetch Trip List failed!", err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -36,15 +39,17 @@ const TripList = () => {
       <Navbar />
       <h1 className="text-3xl text-blue-950 font-800 font-semibold title-list">Your Trip List</h1>
       <div className="list">
-        {tripList?.map(({ listingId, hostId, startDate, endDate, totalPrice, booking=true }, index) => (
+        {tripLists?.map(({ _id, host, listing, startDate, endDate, totalPrice, booking=true }, index) => (
           <ListingCard
-            listingId={listingId._id}
-            creator={hostId._id}
-            listingPhotoPaths={listingId.listingPhotoPaths}
-            city={listingId.city}
-            province={listingId.province}
-            country={listingId.country}
-            category={listingId.category}
+            listingId={listing._id}
+            creator={host}
+            listingPhotoPaths={listing.listingPhotoPaths}
+            city={listing.city}
+            province={listing.province}
+            country={listing.country}
+            category={listing.category}
+            type={listing.type}
+            price={listing.price}
             startDate={startDate}
             endDate={endDate}
             totalPrice={totalPrice}

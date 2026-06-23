@@ -8,15 +8,13 @@ const User = require("../models/user.model");
 router.get("/:userId/trips", async (req, res) => {
   try {
     const { userId } = req.params;
-    const trips = await Booking.find({ customerId: userId }).populate(
-      "customerId hostId listingId"
-    );
-    res.status(202).json(trips);
+    const trips = await Booking.find({ guest: userId }).populate("guest", "-password").populate("host listing");
+    res.status(200).json({trips});
   } catch (err) {
     console.log(err);
     res
-      .status(404)
-      .json({ message: "Can not find trips!", error: err.message });
+      .status(500)
+      .json({ message: "Failed to find trips!", error: err.message });
   }
 });
 
@@ -25,7 +23,7 @@ router.patch("/:userId/wishlist/:listingId", async (req, res) => {
   try {
     const { userId, listingId } = req.params;
     const user = await User.findById(userId);
-    const listing = await Listing.findById(listingId).populate("creator");
+    const listing = await Listing.findById(listingId).populate("creator", "-password");
 
     const favoriteListing = user.wishList.find(
       (item) => item._id.toString() === listingId
@@ -49,7 +47,7 @@ router.patch("/:userId/wishlist/:listingId", async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(404).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -57,39 +55,67 @@ router.patch("/:userId/wishlist/:listingId", async (req, res) => {
 router.get("/:userId/properties", async (req, res) => {
   try {
     const { userId } = req.params;
-    const properties = await Listing.find({ creator: userId }).populate("creator");
-    res.status(202).json(properties);
+    const properties = await Listing.find({ creator: userId }).populate("creator", "-password");
+    res.status(200).json(properties);
   } catch (err) {
     console.log(err);
     res
-      .status(404)
-      .json({ message: "Can not find properties!", error: err.message });
+      .status(500)
+      .json({ message: "Failed to find properties!", error: err.message });
   }
 });
+
+/* DELETE PROPERTY LIST */
+router.delete("/:userId/delete/:listingId", async (req, res) => {
+  try {
+    const { userId, listingId } = req.params;
+    const listing = await Listing.findByIdAndDelete(listingId);
+    res.status(200).json({listing});
+  } catch (err) {
+    res
+      .status(500)
+      .json({ message: "Failed delete property!", error: err.message });
+  }
+})
 
 /*  GET RESERVATION LIST */
 router.get("/:userId/reservations", async (req, res) => {
   try {
     const { userId } = req.params;
-    const reservations = await Booking.find({ host: userId }).populate("guest host listing");
-    res.status(202).json(reservations);
+    const reservations = await Booking.find({ host: userId }).populate("guest", "-password").populate("host listing");
+    res.status(200).json(reservations);
   } catch (err) {
     console.log(err);
     res
-      .status(404)
-      .json({ message: "Can not find reservations!", error: err.message });
+      .status(500)
+      .json({ message: "Failed to fetch reservations!", error: err.message });
   }
 });
 
 /* UPDATE STATUS */
 router.patch("/reservations/:reservationId/status", async(req, res) => {
+  const { status } = req.body;
+  const allowedStatuses = [
+    "pending",
+    "confirmed",
+    "cancelled",
+    "completed"
+  ];
+  if (!allowedStatuses.includes(status)) {
+    return res.status(400).json({
+      message: "Invalid status"
+    });
+  }
   try {
-    const booking = await Booking.findByIdAndUpdate(
-      req.params.reservationId,
-      { status: req.body.status },
-      { new: true }
-    );
-    res.json(booking);
+    const booking = await Booking.findByIdAndUpdate(req.params.reservationId, { status }, { new: true }).populate("guest", "-password").populate("host listing");
+
+    if (!booking) {
+      return res.status(404).json({
+        message: "Reservation not found"
+      });
+    }
+
+    res.status(200).json(booking);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

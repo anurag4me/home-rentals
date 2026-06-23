@@ -26,7 +26,15 @@ const ReservationList = () => {
 
   useEffect(() => {
     getReservationList();
-  }, [reservationList]);
+  }, []);
+
+  const updateReservation = (booking) => {
+    setReservationList(prev =>
+      prev.map(r =>
+        r._id === booking._id ? booking : r
+      )
+    );
+  }
 
   return loading ? (
     <Loader />
@@ -47,6 +55,7 @@ const ReservationList = () => {
             guestsCount={guestsCount}
             totalPrice={totalPrice}
             status={status}
+            onUpdate={updateReservation}
             key={_id}
           />
         ))}

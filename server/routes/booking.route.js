@@ -5,7 +5,7 @@ const Booking = require("../models/booking.model");
 /* CREATE BOOKING */
 router.post("/create", async (req, res) => {
   try {
-    const { customerId, hostId, listingId, startDate, endDate, guestsCount, pricePerNight, totalNights, totalPrice } =
+    const { guest, host, listing, startDate, endDate, guestsCount, pricePerNight, totalNights, totalPrice } =
       req.body;
     const newBooking = await Booking.create({
       guest,
