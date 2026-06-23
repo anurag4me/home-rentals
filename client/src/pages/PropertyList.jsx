@@ -1,16 +1,14 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import "../styles/List.scss";
 import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
-import ListingCard from "../components/ListingCard";
-import { setPropertyList } from "../redux/state";
+import PropertyCard from "../components/PropertyCard";
 import Footer from "../components/Footer";
 
 const PropertyList = () => {
   const [loading, setLoading] = useState(true);
   const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
 
   const propertyList = user?.propertyList;
 
@@ -20,8 +18,6 @@ const PropertyList = () => {
         `http://localhost:3000/users/${user._id}/properties`
       );
       const data = await response.json();
-
-      dispatch(setPropertyList(data));
       setLoading(false);
     } catch (err) {
       console.log("Fetch all properties failed", err.message);
@@ -31,6 +27,10 @@ const PropertyList = () => {
   useEffect(() => {
     getPropertyList();
   }, []);
+
+  function onDelete (listingId) {
+    console.log("Handling delete list");
+  }
 
   return loading ? (
     <Loader />
@@ -57,7 +57,7 @@ const PropertyList = () => {
             },
             index
           ) => (
-            <ListingCard
+            <PropertyCard
               listingId={_id}
               creator={creator}
               listingPhotoPaths={listingPhotoPaths}
@@ -68,6 +68,7 @@ const PropertyList = () => {
               type={type}
               price={price}
               booking={booking}
+              onDelete={onDelete}
               key={index}
             />
           )

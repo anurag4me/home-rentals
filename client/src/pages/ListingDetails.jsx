@@ -24,7 +24,7 @@ function ListingDetails() {
   const getLisitingDetails = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3000/properties/${listingId}`
+        `http://localhost:3000/properties/${listingId}`,
       );
       const data = await response.json();
       setListing(data);
@@ -37,7 +37,6 @@ function ListingDetails() {
   useEffect(() => {
     getLisitingDetails();
   }, []);
-
 
   /* BOOKING CALENDER */
   const [dateRange, setDateRange] = useState([
@@ -55,50 +54,49 @@ function ListingDetails() {
 
   const start = new Date(dateRange[0].startDate);
   const end = new Date(dateRange[0].endDate);
-  const dayCount = Math.round(end - start) / ( 1000 * 60 * 60 * 24 ); // Calculate the difference in day unit
+  const dayCount = Math.round(end - start) / (1000 * 60 * 60 * 24); // Calculate the difference in day unit
 
+  /* SUBMIT BOOKING */
+  const user = useSelector((state) => state.user);
 
-/* SUBMIT BOOKING */
-const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
-const navigate = useNavigate();
-
-const handleSubmit = async () => {
-  if(!user) {
-    alert("Please log in first before booking");
-    return;
-  } else if(user?._id === listing.creator?._id) {
-    alert("You cannot book your own listing");
-    return;
-  }
-  try {
-    const bookingForm = {
-      customerId: user._id,
-      hostId: listing.creator,
-      listingId,
-      startDate: start,
-      endDate: end,
-      guestsCount,
-      pricePerNight: listing.price,
-      totalNights: dayCount,
-      totalPrice: listing.price * dayCount,
+  const handleSubmit = async () => {
+    if (!user) {
+      alert("Please log in first before booking");
+      return;
+    } else if (user?._id === listing.creator?._id) {
+      alert("You cannot book your own listing");
+      return;
     }
+    try {
+      const bookingForm = {
+        customerId: user._id,
+        hostId: listing.creator,
+        listingId,
+        startDate: start,
+        endDate: end,
+        guestsCount,
+        pricePerNight: listing.price,
+        totalNights: dayCount,
+        totalPrice: listing.price * dayCount,
+      };
 
-    const response = await fetch("http://localhost:3000/booking/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookingForm)
-    })
+      const response = await fetch("http://localhost:3000/booking/create", {
+        method: "POST",
+        headerss: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingForm),
+      });
 
-    if(response.ok){
-      navigate(`/${customerId}/trips`);
+      if (response.ok) {
+        navigate(`/${customerId}/trips`);
+      }
+    } catch (err) {
+      console.log("Submit Booking Failed.", err.message);
     }
-  } catch (err) {
-    console.log("Submit Booking Failed.", err.message);
-  }
-}
+  };
 
   return loading ? (
     <Loader />
@@ -107,7 +105,9 @@ const handleSubmit = async () => {
       <Navbar />
       <div className="listing-details">
         <div className="title">
-          <h1 className="text-3xl text-blue-950 font-800 font-semibold">{listing.title}</h1>
+          <h1 className="text-3xl text-blue-950 font-800 font-semibold">
+            {listing.title}
+          </h1>
         </div>
 
         <div className="photos">
@@ -134,7 +134,7 @@ const handleSubmit = async () => {
           <img
             src={`http://localhost:3000/${listing.creator.profileImagePath.replace(
               "public",
-              ""
+              "",
             )}`}
             alt="profile image"
           />
@@ -142,19 +142,25 @@ const handleSubmit = async () => {
             Hosted By {listing.creator.firstName} {listing.creator.lastName}
           </h3>
         </div>
-        <hr/>
+        <hr />
 
-        <h2 className="text-xl text-blue-950 font-800 font-semibold">Description</h2>
+        <h2 className="text-xl text-blue-950 font-800 font-semibold">
+          Description
+        </h2>
         <p>{listing.description}</p>
         <hr />
 
-        <h3 className="text-2xl text-blue-950 font-800 font-semibold">{listing.highlight}</h3>
+        <h3 className="text-2xl text-blue-950 font-800 font-semibold">
+          {listing.highlight}
+        </h3>
         <p>{listing.hightDesc}</p>
         <hr />
 
         <div className="booking">
           <div>
-            <h2 className="text-xl text-blue-950 font-800 font-semibold">What this place offers?</h2>
+            <h2 className="text-xl text-blue-950 font-800 font-semibold">
+              What this place offers?
+            </h2>
             <div className="amenities">
               {listing.amenities[0].split(",").map((item, index) => (
                 <div className="facility" key={index}>
@@ -171,7 +177,9 @@ const handleSubmit = async () => {
           </div>
 
           <div>
-            <h2 className="text-xl text-blue-950 font-800 font-semibold mb-5">How long do you want to stay?</h2>
+            <h2 className="text-xl text-blue-950 font-800 font-semibold mb-5">
+              How long do you want to stay?
+            </h2>
             <div className="date-range-calender">
               <DateRange ranges={dateRange} onChange={handleSelect} />
               {dayCount > 1 ? (
@@ -184,7 +192,9 @@ const handleSubmit = async () => {
                 </h2>
               )}
 
-              <h2 className="text-xl text-blue-950 font-800 font-semibold">Total price: ${listing.price * dayCount}</h2>
+              <h2 className="text-xl text-blue-950 font-800 font-semibold">
+                Total price: ${listing.price * dayCount}
+              </h2>
               <p>Start Date: {dateRange[0].startDate.toDateString()}</p>
               <p>End Date: {dateRange[0].endDate.toDateString()}</p>
               <div className="flex gap-5">
@@ -215,14 +225,18 @@ const handleSubmit = async () => {
                   />
                 </div>
               </div>
-              <button className='bg-red-600 text-white px-14 py-2 mt-4 rounded-xl cursor-pointer' type="submit" onClick={handleSubmit}>
+              <button
+                className="bg-red-600 text-white px-14 py-2 mt-4 rounded-xl cursor-pointer"
+                type="submit"
+                onClick={handleSubmit}
+              >
                 BOOKING
               </button>
             </div>
           </div>
         </div>
       </div>
-      
+
       <Footer />
     </>
   );

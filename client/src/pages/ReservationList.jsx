@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "../styles/List.scss";
 import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
-import ListingCard from "../components/ListingCard";
-import { setReservationList } from "../redux/state";
+import ReservationCard from "../components/ReservationCard";
 import Footer from "../components/Footer";
 
 const ReservationList = () => {
   const [loading, setLoading] = useState(true);
+  const [reservationList, setReservationList] = useState([]);
   const user = useSelector((state) => state.user);
-  const dispatch = useDispatch();
-
-  const reservationList = user?.reservationList;
 
   const getReservationList = async () => {
     try {
@@ -20,8 +17,7 @@ const ReservationList = () => {
         `http://localhost:3000/users/${user._id}/reservations`
       );
       const data = await response.json();
-
-      dispatch(setReservationList(data));
+      setReservationList(data);
       setLoading(false);
     } catch (err) {
       console.log("Fetch all reservations failed", err.message);
@@ -30,7 +26,7 @@ const ReservationList = () => {
 
   useEffect(() => {
     getReservationList();
-  }, []);
+  }, [reservationList]);
 
   return loading ? (
     <Loader />
@@ -41,19 +37,17 @@ const ReservationList = () => {
         Your Reservation List
       </h1>
       <div className="list">
-        {reservationList?.map(({ listing, host, startDate, endDate, totalPrice, booking=true }) => (
-          <ListingCard
-            listingId={listing._id}
-            creator={host}
-            listingPhotoPaths={listing.listingPhotoPaths}
-            city={listing.city}
-            province={listing.province}
-            country={listing.country}
-            category={listing.category}
+        {reservationList?.map(({ _id, guest, listing, startDate, endDate, guestsCount, pricePerNight, totalNights, totalPrice, status }) => (
+          <ReservationCard
+            reservationId={_id}
+            guest={guest}
+            listing={listing}
             startDate={startDate}
             endDate={endDate}
+            guestsCount={guestsCount}
             totalPrice={totalPrice}
-            booking={booking}
+            status={status}
+            key={_id}
           />
         ))}
       </div>

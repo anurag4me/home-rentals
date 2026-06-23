@@ -128,3 +128,104 @@
     }
   }
 }
+
+.ordinary-card {
+  position: relative;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 5px;
+
+  .slider-container {
+    width: 400px;
+    overflow: hidden;
+    border-radius: 2px;
+    margin-bottom: 10px;
+
+    .slider {
+      display: flex;
+      transition: transform 0.5s ease;
+
+      .slide {
+        position: relative;
+        flex: 0 0 100%;
+        width: 100%;
+        height: 270px;
+        display: flex;
+        align-items: center;
+
+        img {
+          width: 100%;
+          height: 100%;
+          filter: brightness(85%);
+        }
+
+        .prev-button,
+        .next-button {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          padding: 6px;
+          border-radius: 50%;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: rgba(255, 255, 255, 0.7);
+          z-index: 9999;
+
+          &:hover {
+            background-color: white;
+          }
+        }
+
+        .prev-button {
+          left: 10px;
+        }
+
+        .next-button {
+          right: 10px;
+        }
+      }
+    }
+  }
+
+  h3 {
+    font-size: 18px;
+  }
+
+  p {
+    font-size: 16px;
+  }
+
+  span {
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .actions {
+    button{
+      width: 50%;
+      padding: 5px 0;
+      margin-top: 3px;
+      cursor: pointer;
+    }
+
+    .approve {
+      background-color: greenyellow;
+    }
+
+    .edit {
+      background-color: aquamarine;
+    }
+
+    .delete {
+      background-color: red;
+      color: white;
+    }
+
+    .complete {
+      background-color: yellow;
+    }
+  }
+}

@@ -5,11 +5,11 @@ import {
   ArrowBackIosNew,
   Favorite,
 } from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setWishList } from "../redux/state";
+import { useNavigate } from "react-router-dom";
 
-const ListingCard = ({
+const PropertyCard = ({
   listingId,
   creator,
   listingPhotoPaths,
@@ -23,6 +23,7 @@ const ListingCard = ({
   endDate,
   totalPrice,
   booking,
+  onDelete,
 }) => {
   /* SLIDER FOR IMAGES */
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -38,8 +39,8 @@ const ListingCard = ({
     setCurrentIndex((prevIndex) => (prevIndex + 1) % listingPhotoPaths.length);
   };
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   /* ADD TO WISHLIST */
   const user = useSelector((state) => state.user);
@@ -47,31 +48,8 @@ const ListingCard = ({
 
   const isLiked = wishList?.find((item) => item?._id === listingId);
 
-  const patchWishList = async () => {
-    if (user?._id !== creator?._id) {
-      const response = await fetch(
-        `http://localhost:3000/users/${user?._id}/wishlist/${listingId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-      const data = await response.json();
-      dispatch(setWishList(data.wishList));
-    } else {
-      return;
-    }
-  };
-
   return (
-    <div
-      className="listing-card"
-      onClick={() => {
-        navigate(`/properties/${listingId}`);
-      }}
-    >
+    <div className="ordinary-card">
       <div className="slider-container">
         <div
           className="slider"
@@ -110,49 +88,21 @@ const ListingCard = ({
         {city}, {province}, {country}
       </h3>
       <p>{category}</p>
+      <p>{type}</p>
+      <p>
+        <span>${price}</span> per night
+      </p>
+      <div className="actions">
+        <button className="edit" onClick={() => navigate(`/edit/${listingId}`)}>
+          Edit
+        </button>
 
-      {!booking ? (
-        <>
-          <p>{type}</p>
-          <p>
-            <span>${price}</span> per night
-          </p>
-        </>
-      ) : (
-        <>
-          <p>
-            {new Date(startDate).toDateString()} -{" "}
-            {new Date(endDate).toDateString()}
-          </p>
-          <p>
-            <span>${totalPrice}</span> total
-          </p>
-        </>
-      )}
-
-      <button
-        className={`favorite ${!user || user?._id === creator?._id ? "disabled-favorite" : ""}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          patchWishList();
-        }}
-        disabled={!user || user?._id === creator?._id}
-        data-tooltip={
-          !user
-            ? "Please log in to add to wishlist"
-            : user?._id === creator?._id
-              ? "You cannot favorite your own listing"
-              : ""
-        }
-      >
-        {isLiked ? (
-          <Favorite sx={{ color: "red" }} />
-        ) : (
-          <Favorite sx={{ color: "white" }} />
-        )}
-      </button>
+        <button className="delete" onClick={() => onDelete(listingId)}>
+          Delete
+        </button>
+      </div>
     </div>
   );
 };
 
-export default ListingCard;
+export default PropertyCard;

@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import "../styles/List.scss";
 import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
-import { useDispatch, useSelector } from "react-redux";
-import { setTripList } from "../redux/state";
+import { useSelector } from "react-redux";
 import ListingCard from "../components/ListingCard";
 import Footer from "../components/Footer";
 
@@ -14,15 +13,12 @@ const TripList = () => {
   const userId = useSelector((state) => state.user?._id);
   const tripList = useSelector((state) => state.user?.tripList);
 
-  const dispatch = useDispatch();
-
   const getTripList = async () => {
     try {
       const response = await fetch(
         `http://localhost:3000/users/${userId}/trips`
       );
       const data = await response.json();
-      dispatch(setTripList(data));
       setLoading(false);
     } catch (err) {
       console.log("Fetch Trip List failed!", err.message);

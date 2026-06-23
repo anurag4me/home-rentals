@@ -21,7 +21,7 @@ router.get("/:userId/trips", async (req, res) => {
 });
 
 /* ADD Listing TO WISHLIST */
-router.patch("/:userId/:listingId", async (req, res) => {
+router.patch("/:userId/wishlist/:listingId", async (req, res) => {
   try {
     const { userId, listingId } = req.params;
     const user = await User.findById(userId);
@@ -80,5 +80,19 @@ router.get("/:userId/reservations", async (req, res) => {
       .json({ message: "Can not find reservations!", error: err.message });
   }
 });
+
+/* UPDATE STATUS */
+router.patch("/reservations/:reservationId/status", async(req, res) => {
+  try {
+    const booking = await Booking.findByIdAndUpdate(
+      req.params.reservationId,
+      { status: req.body.status },
+      { new: true }
+    );
+    res.json(booking);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+})
 
 module.exports = router;
