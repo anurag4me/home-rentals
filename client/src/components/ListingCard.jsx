@@ -24,14 +24,13 @@ const ListingCard = ({
   totalPrice,
   booking,
 }) => {
-
   /* SLIDER FOR IMAGES */
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const goToPrevSlide = () => {
     setCurrentIndex(
       (prevIndex) =>
-        (prevIndex - 1 + listingPhotoPaths.length) % listingPhotoPaths.length
+        (prevIndex - 1 + listingPhotoPaths.length) % listingPhotoPaths.length,
     );
   };
 
@@ -49,19 +48,21 @@ const ListingCard = ({
   const isLiked = wishList?.find((item) => item?._id === listingId);
 
   const patchWishList = async () => {
-    if (user?._id !== creator._id) {
-    const response = await fetch(
-      `http://localhost:3000/users/${user?._id}/${listingId}`,
-      {
-        method: "PATCH",
-        header: {
-          "Content-Type": "application/json",
+    if (user?._id !== creator?._id) {
+      const response = await fetch(
+        `http://localhost:3000/users/${user?._id}/${listingId}`,
+        {
+          method: "PATCH",
+          header: {
+            "Content-Type": "application/json",
+          },
         },
-      }
-    );
-    const data = await response.json();
-    dispatch(setWishList(data.wishList));
-  } else { return }
+      );
+      const data = await response.json();
+      dispatch(setWishList(data.wishList));
+    } else {
+      return;
+    }
   };
 
   return (
@@ -120,7 +121,7 @@ const ListingCard = ({
       ) : (
         <>
           <p>
-            {startDate} - {endDate}
+            {new Date(startDate).toDateString()} - {new Date(endDate).toDateString()}
           </p>
           <p>
             <span>${totalPrice}</span> total
@@ -129,12 +130,19 @@ const ListingCard = ({
       )}
 
       <button
-        className="favorite"
+        className={`favorite ${!user || user?._id === creator?._id ? "disabled-favorite" : ""}`}
         onClick={(e) => {
           e.stopPropagation();
           patchWishList();
         }}
-        disabled={!user}
+        disabled={!user || user?._id === creator?._id}
+        data-tooltip={
+          !user
+            ? "Please log in to add to wishlist"
+            : user?._id === creator?._id
+              ? "You cannot favorite your own listing"
+              : ""
+        }
       >
         {isLiked ? (
           <Favorite sx={{ color: "red" }} />

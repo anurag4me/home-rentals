@@ -34,7 +34,7 @@ const CreateListing = () => {
   };
 
   /* BASIC COUNTS */
-  const [guestCount, setGuestCount] = useState(1);
+  const [maxGuests, setMaxGuests] = useState(1);
   const [bedroomCount, setBedroomCount] = useState(1);
   const [bedCount, setBedCount] = useState(1);
   const [bathroomCount, setBathroomCount] = useState(1);
@@ -111,7 +111,7 @@ const CreateListing = () => {
       listingForm.append("city", formLocation.city);
       listingForm.append("province", formLocation.province);
       listingForm.append("country", formLocation.country);
-      listingForm.append("guestCount", guestCount);
+      listingForm.append("maxGuests", maxGuests);
       listingForm.append("bedroomCount", bedroomCount);
       listingForm.append("bedCount", bedCount);
       listingForm.append("bathroomCount", bathroomCount);
@@ -265,7 +265,7 @@ const CreateListing = () => {
                 <div className="basic_count">
                   <RemoveCircleOutline
                     onClick={() => {
-                      guestCount > 1 && setGuestCount(guestCount - 1);
+                      maxGuests > 1 && setMaxGuests(maxGuests - 1);
                     }}
                     sx={{
                       fontSize: "25px",
@@ -273,10 +273,10 @@ const CreateListing = () => {
                       "&:hover": { color: variables.pinkred },
                     }}
                   />
-                  <p>{guestCount}</p>
+                  <p>{maxGuests}</p>
                   <AddCircleOutline
                     onClick={() => {
-                      setGuestCount(guestCount + 1);
+                      setMaxGuests(maxGuests + 1);
                     }}
                     sx={{
                       fontSize: "25px",

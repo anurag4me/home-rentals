@@ -34,7 +34,7 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    guestCount: {
+    maxGuests: {
       type: Number,
       required: true,
     },

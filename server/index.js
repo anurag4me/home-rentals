@@ -25,7 +25,16 @@ app.use("/booking", bookingRoutes);
 app.use("/users", userRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.status(200).json({
+    success: true,
+    message: "Hello World. Welcome to Home Rental API!"
+  });
+});
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "API route not found"
+  });
 });
 
 app.listen(PORT, () =>

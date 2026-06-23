@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { facilities } from "../data";
 
+import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
+import * as variables from "../styles/variables.scss";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { DateRange } from "react-date-range";
@@ -14,6 +16,7 @@ import Footer from "../components/Footer";
 
 function ListingDetails() {
   const [loading, setLoading] = useState(true);
+  const [guestsCount, setGuestsCount] = useState(1);
 
   const { listingId } = useParams();
   const [listing, setListing] = useState(null);
@@ -56,18 +59,28 @@ function ListingDetails() {
 
 
 /* SUBMIT BOOKING */
-const customerId = useSelector(state=>state?.user?._id);
+const user = useSelector((state) => state.user);
 
 const navigate = useNavigate();
 
 const handleSubmit = async () => {
+  if(!user) {
+    alert("Please log in first before booking");
+    return;
+  } else if(user?._id === listing.creator?._id) {
+    alert("You cannot book your own listing");
+    return;
+  }
   try {
     const bookingForm = {
-      customerId, 
+      customerId: user._id,
+      hostId: listing.creator,
       listingId,
-      hostId: listing.creator._id,
-      startDate: dateRange[0].startDate.toDateString(),
-      endDate: dateRange[0].endDate.toDateString(),
+      startDate: start,
+      endDate: end,
+      guestsCount,
+      pricePerNight: listing.price,
+      totalNights: dayCount,
       totalPrice: listing.price * dayCount,
     }
 
@@ -112,7 +125,7 @@ const handleSubmit = async () => {
           {listing.country}
         </h2>
         <p>
-          {listing.guestCount} guests - {listing.bedCount} bed -{" "}
+          {listing.maxGuests} max guests - {listing.bedCount} bed -{" "}
           {listing.bathroomCount} bath
         </p>
         <hr />
@@ -174,7 +187,34 @@ const handleSubmit = async () => {
               <h2 className="text-xl text-blue-950 font-800 font-semibold">Total price: ${listing.price * dayCount}</h2>
               <p>Start Date: {dateRange[0].startDate.toDateString()}</p>
               <p>End Date: {dateRange[0].endDate.toDateString()}</p>
-
+              <div className="flex gap-5">
+                <p>Number of Guests:</p>
+                <div className="flex gap-3 items-center text-xl">
+                  <RemoveCircleOutline
+                    onClick={() => {
+                      guestsCount > 1 && setGuestsCount(guestsCount - 1);
+                    }}
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
+                    className="mt-5"
+                  />
+                  <p>{guestsCount}</p>
+                  <AddCircleOutline
+                    onClick={() => {
+                      setGuestsCount(guestsCount + 1);
+                    }}
+                    sx={{
+                      fontSize: "25px",
+                      cursor: "pointer",
+                      "&:hover": { color: variables.pinkred },
+                    }}
+                    className="mt-5"
+                  />
+                </div>
+              </div>
               <button className='bg-red-600 text-white px-14 py-2 mt-4 rounded-xl cursor-pointer' type="submit" onClick={handleSubmit}>
                 BOOKING
               </button>

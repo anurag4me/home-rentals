@@ -23,19 +23,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
-    tripList: {
-      type: Array,
-      default: [],
-    },
     wishList: {
-      type: Array,
-      default: [],
-    },
-    propertyList: {
-      type: Array,
-      default: [],
-    },
-    reservationList: {
       type: Array,
       default: [],
     },

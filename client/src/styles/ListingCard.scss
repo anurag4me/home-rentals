@@ -87,5 +87,44 @@
     cursor: pointer;
     z-index: 999;
     background: none;
+    transition: all 0.3s ease;
+
+    &:hover:not(:disabled) {
+      transform: scale(1.1);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+
+      &:hover {
+        opacity: 0.7;
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .disabled-favorite {
+    &::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: -50px;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 1000;
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
   }
 }

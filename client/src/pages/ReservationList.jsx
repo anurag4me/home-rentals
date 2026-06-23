@@ -41,15 +41,15 @@ const ReservationList = () => {
         Your Reservation List
       </h1>
       <div className="list">
-        {reservationList?.map(({ listingId, hostId, startDate, endDate, totalPrice, booking=true }) => (
+        {reservationList?.map(({ listing, host, startDate, endDate, totalPrice, booking=true }) => (
           <ListingCard
-            listingId={listingId._id}
-            creator={hostId._id}
-            listingPhotoPaths={listingId.listingPhotoPaths}
-            city={listingId.city}
-            province={listingId.province}
-            country={listingId.country}
-            category={listingId.category}
+            listingId={listing._id}
+            creator={host}
+            listingPhotoPaths={listing.listingPhotoPaths}
+            city={listing.city}
+            province={listing.province}
+            country={listing.country}
+            category={listing.category}
             startDate={startDate}
             endDate={endDate}
             totalPrice={totalPrice}
